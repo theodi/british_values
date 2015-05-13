@@ -13,3 +13,5 @@ suites:
     run_list:
       - recipe[arsebees::default]
     attributes:
+      ruby-ng:
+        ruby_version: 1.9.3
