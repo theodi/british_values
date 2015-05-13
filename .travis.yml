@@ -29,4 +29,5 @@ before_script:
     #  - docker pull rocker/r-base
 
 script:
+  - bundle
   - bundle exec rake
