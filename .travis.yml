@@ -38,4 +38,4 @@ install:
   - curl -sLo - http://j.mp/install-travis-docker | sh -xe
 
 script:
-  - ./run docker run busybox ls -la
+  - ./run docker && bundle && bundle exec rake
