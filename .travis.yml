@@ -38,4 +38,4 @@ install:
   - curl -sLo - http://j.mp/install-travis-docker | sh -xe
 
 script:
-  - ./run 'bundle && bundle exec rake'
+  - ./run '~/.rvm/gems/ruby-2.1.0/bin/bundle && ~/.rvm/gems/ruby-2.1.0/bin/bundle exec rake'
