@@ -42,4 +42,4 @@ before_script:
   - '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"'
 
 script:
-  - ./run 'docker && bundle && bundle exec rake'
+  - ./run 'docker -d && bundle && bundle exec rake'
