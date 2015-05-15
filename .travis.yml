@@ -39,7 +39,7 @@ install:
   - curl -sLo - http://j.mp/install-travis-docker | sh -xe
 
 before_script:
-  - ./run 'docker -d &'
+  - "sekexe/run 'mount -t tmpfs -o size=8g tmpfs /var/lib/docker && docker -d -H tcp://0.0.0.0:2375' &"
 
 script:
   - bundle
