@@ -36,6 +36,7 @@ env:
 
 install:
   - curl -sLo - http://j.mp/install-travis-docker | sh -xe
+  - gem install --user-install executable-hooks
 
 script:
   - ./run '~/.rvm/gems/ruby-2.1.0/bin/bundle && ~/.rvm/gems/ruby-2.1.0/bin/bundle exec rake'
