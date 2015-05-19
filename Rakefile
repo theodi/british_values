@@ -4,7 +4,7 @@ task :converge do
 end
 
 desc 'verify node'
-task :converge do
+task :verify do
   exec 'bundle exec kitchen verify'
 end
 

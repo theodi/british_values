@@ -11,7 +11,8 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[arsebees::default]
+      - recipe[british_values::default]
     attributes:
       ruby-ng:
         ruby_version: 1.9.3
+      user: 'certificates'
