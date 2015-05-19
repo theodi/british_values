@@ -14,7 +14,21 @@ include_recipe 'odi-users::default'
 include_recipe 'ruby-ng::default'
 
 deploy_revision '/home/certificates/certificates.theodi.org' do
+  repo 'git://github.com/theodi/open-data-certificate'
   user node['user']
   group node['user']
-  repo 'git://github.com/theodi/open-data-certificate'
+  migrate false
+  before_migrate do
+    script 'Bundling the gems' do
+      interpreter 'bash'
+      cwd release_path
+      user new_resource.user
+      code <<-EOF
+        bundle install \
+          --without=development test \
+          --quiet \
+          --deployment
+      EOF
+    end
+  end
 end

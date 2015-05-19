@@ -17,5 +17,7 @@ describe file '/home/certificates/certificates.theodi.org' do
   it { should be_owned_by 'certificates' }
 end
 
-describe file '/home/certificates/certificates.theodi.org/vendor/bundle' do
+describe file '/home/certificates/certificates.theodi.org/current/vendor/bundle' do
+  it { should be_directory }
+  it { should be_owned_by 'certificates' }
 end
