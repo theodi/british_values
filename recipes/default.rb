@@ -4,7 +4,6 @@ group = node['user']
 include_recipe 'apt'
 
 %w{
-  ruby1.9.1-dev
   build-essential
   libcurl4-openssl-dev
   libmysqlclient-dev
@@ -14,6 +13,10 @@ include_recipe 'apt'
   package pkg do
     action :install
   end
+end
+
+package "ruby#{node['dev_package']}-dev" do
+  action :install
 end
 
 include_recipe 'git'
