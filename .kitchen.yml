@@ -16,3 +16,4 @@ suites:
       ruby-ng:
         ruby_version: 1.9.3
       user: 'certificates'
+      repo: 'theodi/open-data-certificate'

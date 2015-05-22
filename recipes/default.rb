@@ -34,7 +34,7 @@ cookbook_file 'bundle-config' do
 end
 
 deploy_revision "/home/#{user}/certificates.theodi.org" do
-  repo 'git://github.com/theodi/open-data-certificate'
+  repo "git://github.com/#{node['repo']}"
   user user
   group group
   migrate false
