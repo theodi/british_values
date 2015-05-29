@@ -18,3 +18,7 @@ suites:
         dev_package: 1.9.1
       user: 'certificates'
       repo: 'theodi/open-data-certificate'
+      mysql:
+        host: 10.14.1.111
+        database: certificates
+        password: certificates

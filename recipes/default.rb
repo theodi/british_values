@@ -41,7 +41,23 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
   user user
   group group
   migrate false
+  action :force_deploy
   before_migrate do
+    directory "/home/#{user}/certificates.theodi.org/shared/config/" do
+      action :create
+      recursive true
+    end
+
+    template "/home/#{user}/certificates.theodi.org/shared/config/database.yml" do
+      action :create
+      variables(
+        :mysql_host     => node['mysql']['host'],
+        :mysql_database => node['mysql']['database'],
+        :mysql_username => node['mysql']['database'],
+        :mysql_password => node['mysql']['password']
+      )
+    end
+
     script 'Bundling the gems' do
       interpreter 'bash'
       cwd release_path
