@@ -97,5 +97,15 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
         bundle exec rake assets:precompile
       EOF
     end
+
+    %w[ log run ].each do |subdir|
+      bash 'Make dirs for Foreman' do
+        user 'root'
+        code <<-EOF
+          mkdir -p /var/#{subdir}/#{user}
+          chown #{user} /var/#{subdir}/#{user}
+        EOF
+      end
+    end
   end
 end
