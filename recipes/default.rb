@@ -32,7 +32,6 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
   migrate node.has_key? :migrate
   migration_command node['migrate']
 #  BORK
-#  THIS DOESN'T ACTUALLY WORK:
 #    * WE NEED TO db:create FIRST, BUT NOT PER-DEPLOY, SURELY?
 #    * MAYBE A CASE FOR THE MYSQL-PROXY COOKBOOK OF OLD?
 #    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS
