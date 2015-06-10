@@ -33,8 +33,7 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
   migration_command node['migrate']
 #  BORK
 #    * WE NEED TO db:create FIRST, BUT NOT PER-DEPLOY, SURELY?
-#    * MAYBE A CASE FOR THE MYSQL-PROXY COOKBOOK OF OLD?
-#    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS
+#    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS - SOMETHING REDIS QUEUE
   action :force_deploy
   environment(
     'RACK_ENV' => node['deployment']['rack_env']
@@ -86,6 +85,16 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
           --without=development test \
           --quiet \
           --deployment
+      EOF
+    end
+  end
+
+  before_restart do
+    bash 'Precompiling assets' do
+      cwd release_path
+      user user
+      code <<-EOF
+        bundle exec rake assets:precompile
       EOF
     end
   end
