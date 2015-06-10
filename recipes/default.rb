@@ -2,6 +2,7 @@ user = node['user']
 group = node['user']
 
 include_recipe 'apt'
+include_recipe 'envbuilder'
 
 %w{
   build-essential
@@ -23,26 +24,32 @@ include_recipe 'git'
 include_recipe 'odi-users::default'
 include_recipe 'ruby-ng::default'
 
-directory "/home/#{user}/.bundle" do
-  owner user
-  group group
-  action :create
-end
-
-cookbook_file 'bundle-config' do
-  path "/home/#{user}/.bundle/config"
-  owner user
-  group group
-  action :create
-end
-
 deploy_revision "/home/#{user}/certificates.theodi.org" do
   repo "git://github.com/#{node['repo']}"
   user user
   group group
-  migrate false
+  revision node['deployment']['revision']
+  migrate node.has_key? :migrate
+  migration_command node['migrate']
+#  BORK
+#  THIS DOESN'T ACTUALLY WORK:
+#    * WE NEED TO db:create FIRST, BUT NOT PER-DEPLOY, SURELY?
+#    * MAYBE A CASE FOR THE MYSQL-PROXY COOKBOOK OF OLD?
+#    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS
   action :force_deploy
+  environment(
+    'RACK_ENV' => node['deployment']['rack_env']
+  )
+
   before_migrate do
+    bash 'Symlink env' do
+      cwd release_path
+      user user
+      code <<-EOF
+        ln -sf /home/#{user}/env .env
+      EOF
+    end
+
     directory "/home/#{user}/certificates.theodi.org/shared/config/" do
       action :create
       recursive true
@@ -58,8 +65,21 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
       )
     end
 
-    script 'Bundling the gems' do
-      interpreter 'bash'
+    bash 'Configuring bundler' do
+      environment(
+        'HOME' => "/home/#{user}"
+      )
+      cwd release_path
+      user user
+      code <<-EOF
+        bundle config build.nokogiri --use-system-libraries
+      EOF
+    end
+
+    bash 'Bundling the gems' do
+      environment(
+        'HOME' => "/home/#{user}"
+      )
       cwd release_path
       user user
       code <<-EOF
