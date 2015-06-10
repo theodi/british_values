@@ -12,23 +12,30 @@ suites:
   - name: default
     data_bags_path: test/data_bags
     run_list:
+      - recipe[odi-apt]
+      - recipe[mysql::client]
+      - recipe[rackspace-mysql-proxy]
       - recipe[british_values::default]
     attributes:
       envbuilder:
-        base_dir: "/home/certificates"
-        base_dbi: "production"
-        owner: "certificates"
-        group: "certificates"
+        base_dir: /home/certificates
+        base_dbi: production
+        owner: certificates
+        group: certificates
       ruby-ng:
         ruby_version: 1.9.3
         dev_package: 1.9.1
-      user: 'certificates'
-      repo: 'theodi/open-data-certificate'
+      user: certificates
+      repo: theodi/open-data-certificate
       mysql:
-        host: 10.14.1.111
+        host: localhost
         database: certificates
         password: certificates
       migrate: bundle exec rake db:schema:load
       deployment:
         revision: CURRENT
         rack_env: production
+      rackspace-mysql-proxy:
+        database: certificates
+        user: certificates
+        password: certificates
