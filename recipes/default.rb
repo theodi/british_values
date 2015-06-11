@@ -1,5 +1,6 @@
 user = node['user']
 group = node['user']
+port = node['port']
 
 include_recipe 'apt'
 include_recipe 'envbuilder'
@@ -106,6 +107,27 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
           chown #{user} /var/#{subdir}/#{user}
         EOF
       end
+    end
+
+    bash 'Generate startup scripts with Foreman' do
+      cwd release_path
+      user user
+      code <<-EOF
+        bundle exec foreman export \
+          -a #{user} \
+          -u #{user} \
+          -p 8000 \
+          -c thin=2,delayed_job=1 \
+          -e #{cwd}/.env \
+          upstart /tmp/init
+      EOF
+    end
+
+    bash 'Copy startup scripts into the right place' do
+      user 'root'
+      code <<-EOF
+        mv /tmp/init/* /etc/init/
+      EOF
     end
   end
 end
