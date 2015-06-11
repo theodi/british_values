@@ -25,7 +25,7 @@ suites:
       user: 'certificates'
       repo: 'theodi/open-data-certificate'
       mysql:
-        host: 10.14.1.111
+        host: <%= `ipconfig getifaddr en0` %>
         database: certificates
         password: certificates
       migrate: bundle exec rake db:schema:load
