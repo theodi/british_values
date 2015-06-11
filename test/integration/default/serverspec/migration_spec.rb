@@ -1,8 +1,7 @@
 require 'serverspec'
+require 'spec_helper'
 set :backend, :exec
 
-describe command 'mysql -h 10.14.1.111 -u certificates -pcertificates certificates -e "show tables"' do
-  its(:stdout) { should match /| Tables_in_certificates/ }
-  its(:stdout) { should match /| certificates/ }
-  its(:stdout) { should match /| users/ }
+describe command "cd /home/certificates/certificates.theodi.org/current && RAILS_ENV=production bundle exec rails runner 'Certificate.first'" do
+  its(:exit_status) { should eq 0 }
 end
