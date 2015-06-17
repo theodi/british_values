@@ -1,5 +1,6 @@
 ---
 driver:
+#  name: vagrant
   name: docker
 
 provisioner:
@@ -31,5 +32,5 @@ suites:
         password: certificates
       migrate: bundle exec rake db:schema:load
       deployment:
-        revision: CURRENT
+        revision: afc3334d1b16a2355b27b4afc56ece2efa221a3f
         rack_env: production
