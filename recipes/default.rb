@@ -130,4 +130,6 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
       EOF
     end
   end
+
+  restart_command "sudo restart #{user}"
 end
