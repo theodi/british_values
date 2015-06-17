@@ -97,6 +97,8 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
   end
 
   before_restart do
+    current_release_directory = release_path
+
     bash 'Precompiling assets' do
       cwd release_path
       user user
@@ -105,36 +107,10 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
       EOF
     end
 
-    %w[ log run ].each do |subdir|
-      bash 'Make dirs for Foreman' do
-        user 'root'
-        code <<-EOF
-          mkdir -p /var/#{subdir}/#{user}
-          chown #{user} /var/#{subdir}/#{user}
-        EOF
-      end
+    foremanise user do
+      cwd current_release_directory
     end
 
-    bash 'Generate startup scripts with Foreman' do
-      cwd release_path
-      user user
-      code <<-EOF
-        bundle exec foreman export \
-          -a #{user} \
-          -u #{user} \
-          -p 8000 \
-          -c thin=2,delayed_job=1 \
-          -e #{cwd}/.env \
-          upstart /tmp/init
-      EOF
-    end
-
-    bash 'Copy startup scripts into the right place' do
-      user 'root'
-      code <<-EOF
-        mv /tmp/init/* /etc/init/
-      EOF
-    end
   end
 
   restart_command "sudo restart #{user}"
