@@ -54,6 +54,12 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
       recursive true
     end
 
+    directory "/home/#{user}/certificates.theodi.org/shared/log/" do
+      action :create
+      recursive true
+      user user
+    end
+
     template "/home/#{user}/certificates.theodi.org/shared/config/database.yml" do
       action :create
       variables(
