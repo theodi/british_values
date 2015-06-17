@@ -24,5 +24,6 @@ describe file '/etc/init/certificates-thin-2.conf' do
   it { should be_file }
   its(:content) { should match /start on starting certificates-thin/ }
   its(:content) { should match /exec su - certificates -c/ }
-  its(:content) { should match /bundle exec thin start/ }
+  its(:content) { should match /PORT=8001/ }
+  its(:content) { should match /bundle exec thin start -p \$PORT >> \/var\/log\/certificates\/thin-2.log 2>&1/ }
 end
