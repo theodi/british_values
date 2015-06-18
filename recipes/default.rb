@@ -5,21 +5,7 @@ port = node['port']
 include_recipe 'apt'
 include_recipe 'envbuilder'
 
-%w{
-  build-essential
-  libcurl4-openssl-dev
-  libmysqlclient-dev
-  libxml2-dev
-  libxslt1-dev
-}.each do |pkg|
-  package pkg do
-    action :install
-  end
-end
-
-package "ruby#{node['dev_package']}-dev" do
-  action :install
-end
+include_recipe 'british_values::dependencies'
 
 include_recipe 'git'
 include_recipe 'odi-users::default'
@@ -35,12 +21,14 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
 #  BORK
 #    * WE NEED TO db:create FIRST, BUT NOT PER-DEPLOY, SURELY?
 #    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS - SOMETHING REDIS QUEUE
-  action :force_deploy
+  action :deploy
   environment(
     'RACK_ENV' => node['deployment']['rack_env']
   )
 
   before_migrate do
+    current_release_directory = release_path
+
     bash 'Symlink env' do
       cwd release_path
       user user
@@ -70,29 +58,8 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
       )
     end
 
-    bash 'Configuring bundler' do
-      environment(
-        'HOME' => "/home/#{user}"
-      )
-      cwd release_path
-      user user
-      code <<-EOF
-        bundle config build.nokogiri --use-system-libraries
-      EOF
-    end
-
-    bash 'Bundling the gems' do
-      environment(
-        'HOME' => "/home/#{user}"
-      )
-      cwd release_path
-      user user
-      code <<-EOF
-        bundle install \
-          --without=development test \
-          --quiet \
-          --deployment
-      EOF
+    bundlify user do
+      cwd current_release_directory
     end
   end
 
