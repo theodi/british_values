@@ -24,6 +24,7 @@ suites:
         ruby_version: 1.9.3
         dev_package: 1.9.1
       user: certificates
+      fully_qualified_domain_name: certificates.theodi.org
       port: 8000
       repo: theodi/open-data-certificate
       mysql:

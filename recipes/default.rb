@@ -1,6 +1,7 @@
 user = node['user']
 group = node['user']
 port = node['port']
+fqdn = node['fully_qualified_domain_name']
 
 include_recipe 'apt'
 include_recipe 'envbuilder'
@@ -11,7 +12,7 @@ include_recipe 'git'
 include_recipe 'odi-users::default'
 include_recipe 'ruby-ng::default'
 
-deploy_revision "/home/#{user}/certificates.theodi.org" do
+deploy_revision "/home/#{user}/#{fqdn}" do
   repo "git://github.com/#{node['repo']}"
   user user
   group group
@@ -37,18 +38,18 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
       EOF
     end
 
-    directory "/home/#{user}/certificates.theodi.org/shared/config/" do
+    directory "/home/#{user}/#{fqdn}/shared/config/" do
       action :create
       recursive true
     end
 
-    directory "/home/#{user}/certificates.theodi.org/shared/log/" do
+    directory "/home/#{user}/#{fqdn}/shared/log/" do
       action :create
       recursive true
       user user
     end
 
-    template "/home/#{user}/certificates.theodi.org/shared/config/database.yml" do
+    template "/home/#{user}/#{fqdn}/shared/config/database.yml" do
       action :create
       variables(
         :mysql_host     => node['mysql']['host'],
