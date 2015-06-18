@@ -67,12 +67,9 @@ deploy_revision "/home/#{user}/#{fqdn}" do
   before_restart do
     current_release_directory = release_path
 
-    bash 'Precompiling assets' do
-      cwd release_path
+    precompile_assets 'Random string' do
+      cwd current_release_directory
       user user
-      code <<-EOF
-        bundle exec rake assets:precompile
-      EOF
     end
 
     foremanise user do
