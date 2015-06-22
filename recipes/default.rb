@@ -9,8 +9,11 @@ include_recipe 'envbuilder'
 include_recipe 'british_values::dependencies'
 
 include_recipe 'git'
+include_recipe 'odi-pk'
 include_recipe 'odi-users::default'
 include_recipe 'ruby-ng::default'
+
+include_recipe 'odi-monitoring'
 
 deploy_revision "/home/#{user}/#{fqdn}" do
   repo "git://github.com/#{node['repo']}"
@@ -67,7 +70,7 @@ deploy_revision "/home/#{user}/#{fqdn}" do
   before_restart do
     current_release_directory = release_path
 
-    precompile_assets 'Random string' do
+    precompile_assets do
       cwd current_release_directory
       user user
     end
@@ -75,8 +78,16 @@ deploy_revision "/home/#{user}/#{fqdn}" do
     foremanise user do
       cwd current_release_directory
     end
-
   end
 
-  restart_command "sudo restart #{user}"
+  after_restart do
+    current_release_directory = release_path
+
+    post_deploy node['post_deploy_tasks'] do
+      cwd current_release_directory
+      user user
+    end
+  end
+
+  restart_command "sudo service #{user} restart"
 end

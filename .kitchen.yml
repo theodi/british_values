@@ -1,7 +1,6 @@
 ---
 driver:
-#  name: vagrant
-  name: docker
+  name: vagrant
 
 provisioner:
   name: chef_solo
@@ -32,6 +31,8 @@ suites:
         database: certificates
         password: certificates
       migrate: bundle exec rake db:schema:load
+      post_deploy_tasks:
+        - bundle exec rake odc:deploy
       deployment:
-        revision: afc3334d1b16a2355b27b4afc56ece2efa221a3f
+        revision: 2ce8313ad84090eb147dc2702d1c582766394fa8
         rack_env: production
