@@ -9,6 +9,7 @@ include_recipe 'envbuilder'
 include_recipe 'british_values::dependencies'
 
 include_recipe 'git'
+include_recipe 'nginx'
 include_recipe 'odi-pk'
 include_recipe 'odi-users::default'
 include_recipe 'ruby-ng::default'
