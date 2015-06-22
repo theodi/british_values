@@ -1,6 +1,5 @@
 user = node['user']
 group = node['user']
-port = node['port']
 fqdn = node['fully_qualified_domain_name']
 
 include_recipe 'apt'
@@ -70,6 +69,7 @@ deploy_revision "/home/#{user}/#{fqdn}" do
 
   before_restart do
     current_release_directory = release_path
+    port = node['port']
 
     precompile_assets do
       cwd current_release_directory
@@ -78,6 +78,7 @@ deploy_revision "/home/#{user}/#{fqdn}" do
 
     foremanise user do
       cwd current_release_directory
+      port port
     end
   end
 

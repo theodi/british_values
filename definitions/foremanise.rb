@@ -2,6 +2,7 @@ define :foremanise, :params => {} do
   name = params[:name]
   user = params[:name]
   cwd = params[:cwd]
+  port = params[:port]
 
   %w[ log run ].each do |subdir|
     bash 'Make dirs for Foreman' do
@@ -20,7 +21,7 @@ define :foremanise, :params => {} do
       bundle exec foreman export \
         -a #{user} \
         -u #{user} \
-        -p 8000 \
+        -p #{port} \
         -c thin=2,delayed_job=1 \
         -e #{cwd}/.env \
         upstart /tmp/init
