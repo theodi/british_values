@@ -1,30 +1,24 @@
 define :foremanise, :params => {} do
-  name = params[:name]
-  user = params[:name]
-  cwd = params[:cwd]
-  port = params[:port]
-  concurrency = params[:concurrency]
-
   %w[ log run ].each do |subdir|
     bash 'Make dirs for Foreman' do
       user 'root'
       code <<-EOF
-        mkdir -p /var/#{subdir}/#{user}
-        chown #{user} /var/#{subdir}/#{user}
+        mkdir -p /var/#{subdir}/#{params[:name]}
+        chown #{params[:name]} /var/#{subdir}/#{params[:name]}
       EOF
     end
   end
 
   bash 'Generate startup scripts with Foreman' do
-    cwd cwd
-    user user
+    cwd params[:cwd]
+    user params[:name]
     code <<-EOF
       bundle exec foreman export \
-        -a #{user} \
-        -u #{user} \
-        -p #{port} \
-        -c thin=#{concurrency},delayed_job=1 \
-        -e #{cwd}/.env \
+        -a #{params[:name]} \
+        -u #{params[:name]} \
+        -p #{params[:port]} \
+        -c thin=#{params[:concurrency]},delayed_job=1 \
+        -e #{params[:cwd]}/.env \
         upstart /tmp/init
     EOF
   end

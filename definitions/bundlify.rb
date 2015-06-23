@@ -1,14 +1,10 @@
 define :bundlify, :params => {} do
-  name = params[:name]
-  user = params[:name]
-  cwd = params[:cwd]
-
   bash 'Configuring bundler' do
     environment(
-      'HOME' => "/home/#{user}"
+      'HOME' => "/home/#{params[:name]}"
     )
-    cwd cwd
-    user user
+    cwd params[:cwd]
+    user params[:name]
     code <<-EOF
       bundle config build.nokogiri --use-system-libraries
     EOF
@@ -16,10 +12,10 @@ define :bundlify, :params => {} do
 
   bash 'Bundling the gems' do
     environment(
-      'HOME' => "/home/#{user}"
+      'HOME' => "/home/#{params[:name]}"
     )
-    cwd cwd
-    user user
+    cwd params[:cwd]
+    user params[:name]
     code <<-EOF
       bundle install \
         --without=development test \

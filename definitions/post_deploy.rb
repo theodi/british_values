@@ -1,12 +1,8 @@
 define :post_deploy, :params => {} do
-  commands = params[:name]
-  user = params[:user]
-  cwd = params[:cwd]
-
-  (commands || []).each do |command|
+  (params[:name] || []).each do |command|
     bash command do
-      cwd cwd
-      user user
+      cwd params[:cwd]
+      user params[:user]
       code <<-EOF
         RAILS_ENV=#{node['deployment']['rack_env']} #{command}
       EOF
