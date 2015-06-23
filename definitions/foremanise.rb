@@ -3,6 +3,7 @@ define :foremanise, :params => {} do
   user = params[:name]
   cwd = params[:cwd]
   port = params[:port]
+  concurrency = params[:concurrency]
 
   %w[ log run ].each do |subdir|
     bash 'Make dirs for Foreman' do
@@ -22,7 +23,7 @@ define :foremanise, :params => {} do
         -a #{user} \
         -u #{user} \
         -p #{port} \
-        -c thin=2,delayed_job=1 \
+        -c thin=#{concurrency},delayed_job=1 \
         -e #{cwd}/.env \
         upstart /tmp/init
     EOF

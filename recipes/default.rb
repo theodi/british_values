@@ -69,7 +69,8 @@ deploy_revision "/home/#{user}/#{fqdn}" do
 
   before_restart do
     current_release_directory = release_path
-    port = node['port']
+    port = node['start_port']
+    concurrency = node['concurrency']
 
     precompile_assets do
       cwd current_release_directory
@@ -79,6 +80,7 @@ deploy_revision "/home/#{user}/#{fqdn}" do
     foremanise user do
       cwd current_release_directory
       port port
+      concurrency concurrency
     end
   end
 
