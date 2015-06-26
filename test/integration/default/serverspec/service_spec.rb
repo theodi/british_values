@@ -12,3 +12,11 @@ end
 describe command 'wget --server-response -O/dev/null http://localhost:8001 |\& grep "^  "' do
   its(:stdout) { should match /200 OK/ }
 end
+
+describe command 'wget --server-response -O/dev/null http://localhost |\& grep "^  "' do
+  its(:stdout) { should match /200 OK/ }
+end
+
+describe command 'wget -qO- http://localhost' do
+  its(:stdout) {should match /<title>ODI Open Data Certificate<\/title>/ }
+end
