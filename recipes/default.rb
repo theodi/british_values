@@ -25,7 +25,7 @@ deploy_revision "/home/#{user}/#{fqdn}" do
 #  BORK
 #    * WE NEED TO db:create FIRST, BUT NOT PER-DEPLOY, SURELY?
 #    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS - SOMETHING REDIS QUEUE
-  action :force_deploy
+  action :deploy
   environment(
     'RACK_ENV' => node['deployment']['rack_env']
   )
