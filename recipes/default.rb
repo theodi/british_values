@@ -25,7 +25,7 @@ deploy_revision "/home/#{user}/#{fqdn}" do
 #  BORK
 #    * WE NEED TO db:create FIRST, BUT NOT PER-DEPLOY, SURELY?
 #    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS - SOMETHING REDIS QUEUE
-  action :deploy
+  action :force_deploy
   environment(
     'RACK_ENV' => node['deployment']['rack_env']
   )
@@ -82,6 +82,12 @@ deploy_revision "/home/#{user}/#{fqdn}" do
       port port
       concurrency concurrency
     end
+
+    make_vhosts do
+      cwd current_release_directory
+      user user
+      fqdn fqdn
+    end
   end
 
   after_restart do
@@ -94,4 +100,5 @@ deploy_revision "/home/#{user}/#{fqdn}" do
   end
 
   restart_command "sudo service #{user} restart"
+  notifies :restart, "service[nginx]"
 end

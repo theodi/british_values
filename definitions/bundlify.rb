@@ -17,6 +17,8 @@ define :bundlify, :params => {} do
     cwd params[:cwd]
     user params[:name]
     code <<-EOF
+      LAST=`ls -tr /home/certificates/certificates.theodi.org/releases/ | tail -1`
+      rsync -av /home/certificates/vendor /home/certificates/certificates.theodi.org/releases/$LAST/
       bundle install \
         --without=development test \
         --quiet \

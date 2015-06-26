@@ -24,6 +24,8 @@ suites:
         dev_package: 1.9.1
       user: certificates
       fully_qualified_domain_name: certificates.theodi.org
+      catch_and_redirect:
+        - certificate.theodi.org
       start_port: 8000
       concurrency: 2
       repo: theodi/open-data-certificate

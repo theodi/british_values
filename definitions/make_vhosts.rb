@@ -4,8 +4,8 @@ define :make_vhosts, :params => {} do
   ]
 
   vh = "%s/%s" % [
-      vhosts_dir,
-      params[:fqdn]
+    vhosts_dir,
+    params[:fqdn]
   ]
 
   directory vhosts_dir do
@@ -16,16 +16,17 @@ define :make_vhosts, :params => {} do
   template vh do
     source "vhost.erb"
     variables(
-      :servername          => node['git_project'],
-      :listen_port         => node['deployment']['nginx_port'],
-      :port                => node['deployment']['port'],
-      :fqdn                => params[:fqdn],
-      :catch_and_redirect  => node['catch_and_redirect'],
-      :default             => node['deployment']['default_vhost'],
-      :static_assets       => node['deployment']['static_assets'],
-      :assets_allow_origin => node['deployment']['assets_allow_origin']
+      :servername         => node['user'],
+      :port               => node['start_port'],
+      :concurrency        => node['concurrency'],
+      :fqdn               => node['fully_qualified_domain_name'],
+      :catch_and_redirect => node['catch_and_redirect']
     )
     action :create
+  end
+
+  file '/etc/nginx/sites-enabled/000-default' do
+    action :delete
   end
 
   link "/etc/nginx/sites-enabled/%s" % [
