@@ -1,6 +1,6 @@
 ---
 driver:
-  name: docker
+  name: vagrant
 
 provisioner:
   name: chef_solo
@@ -22,13 +22,20 @@ suites:
       ruby-ng:
         ruby_version: 1.9.3
         dev_package: 1.9.1
-      user: 'certificates'
-      repo: 'theodi/open-data-certificate'
+      user: certificates
+      fully_qualified_domain_name: certificates.theodi.org
+      catch_and_redirect:
+        - certificate.theodi.org
+      start_port: 8000
+      concurrency: 2
+      repo: theodi/open-data-certificate
       mysql:
-        host: 10.14.1.111
+        host: <%= `ipconfig getifaddr en0` %>
         database: certificates
         password: certificates
       migrate: bundle exec rake db:schema:load
+      post_deploy_tasks:
+        - bundle exec rake odc:deploy
       deployment:
-        revision: CURRENT
+        revision: 2ce8313ad84090eb147dc2702d1c582766394fa8
         rack_env: production

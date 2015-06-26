@@ -1,30 +1,21 @@
 user = node['user']
 group = node['user']
+fqdn = node['fully_qualified_domain_name']
 
 include_recipe 'apt'
 include_recipe 'envbuilder'
 
-%w{
-  build-essential
-  libcurl4-openssl-dev
-  libmysqlclient-dev
-  libxml2-dev
-  libxslt1-dev
-}.each do |pkg|
-  package pkg do
-    action :install
-  end
-end
-
-package "ruby#{node['dev_package']}-dev" do
-  action :install
-end
+include_recipe 'british_values::dependencies'
 
 include_recipe 'git'
+include_recipe 'nginx'
+include_recipe 'odi-pk'
 include_recipe 'odi-users::default'
 include_recipe 'ruby-ng::default'
 
-deploy_revision "/home/#{user}/certificates.theodi.org" do
+include_recipe 'odi-monitoring'
+
+deploy_revision "/home/#{user}/#{fqdn}" do
   repo "git://github.com/#{node['repo']}"
   user user
   group group
@@ -34,12 +25,14 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
 #  BORK
 #    * WE NEED TO db:create FIRST, BUT NOT PER-DEPLOY, SURELY?
 #    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS - SOMETHING REDIS QUEUE
-  action :force_deploy
+  action :deploy
   environment(
     'RACK_ENV' => node['deployment']['rack_env']
   )
 
   before_migrate do
+    current_release_directory = release_path
+
     bash 'Symlink env' do
       cwd release_path
       user user
@@ -48,12 +41,18 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
       EOF
     end
 
-    directory "/home/#{user}/certificates.theodi.org/shared/config/" do
+    directory "/home/#{user}/#{fqdn}/shared/config/" do
       action :create
       recursive true
     end
 
-    template "/home/#{user}/certificates.theodi.org/shared/config/database.yml" do
+    directory "/home/#{user}/#{fqdn}/shared/log/" do
+      action :create
+      recursive true
+      user user
+    end
+
+    template "/home/#{user}/#{fqdn}/shared/config/database.yml" do
       action :create
       variables(
         :mysql_host     => node['mysql']['host'],
@@ -63,49 +62,43 @@ deploy_revision "/home/#{user}/certificates.theodi.org" do
       )
     end
 
-    bash 'Configuring bundler' do
-      environment(
-        'HOME' => "/home/#{user}"
-      )
-      cwd release_path
-      user user
-      code <<-EOF
-        bundle config build.nokogiri --use-system-libraries
-      EOF
-    end
-
-    bash 'Bundling the gems' do
-      environment(
-        'HOME' => "/home/#{user}"
-      )
-      cwd release_path
-      user user
-      code <<-EOF
-        bundle install \
-          --without=development test \
-          --quiet \
-          --deployment
-      EOF
+    bundlify user do
+      cwd current_release_directory
     end
   end
 
   before_restart do
-    bash 'Precompiling assets' do
-      cwd release_path
+    current_release_directory = release_path
+    port = node['start_port']
+    concurrency = node['concurrency']
+
+    precompile_assets do
+      cwd current_release_directory
       user user
-      code <<-EOF
-        bundle exec rake assets:precompile
-      EOF
     end
 
-    %w[ log run ].each do |subdir|
-      bash 'Make dirs for Foreman' do
-        user 'root'
-        code <<-EOF
-          mkdir -p /var/#{subdir}/#{user}
-          chown #{user} /var/#{subdir}/#{user}
-        EOF
-      end
+    foremanise user do
+      cwd current_release_directory
+      port port
+      concurrency concurrency
+    end
+
+    make_vhosts do
+      cwd current_release_directory
+      user user
+      fqdn fqdn
     end
   end
+
+  after_restart do
+    current_release_directory = release_path
+
+    post_deploy node['post_deploy_tasks'] do
+      cwd current_release_directory
+      user user
+    end
+  end
+
+  restart_command "sudo service #{user} restart"
+  notifies :restart, "service[nginx]"
 end
