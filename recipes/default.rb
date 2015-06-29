@@ -5,7 +5,7 @@ fqdn = node['fully_qualified_domain_name']
 include_recipe 'apt'
 include_recipe 'envbuilder'
 
-include_recipe 'british_values::dependencies'
+include_recipe 'chef_certificates::dependencies'
 
 include_recipe 'git'
 include_recipe 'nginx'
