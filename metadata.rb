@@ -1,5 +1,5 @@
 name 'chef_certificates'
-version '0.1.0'
+version '0.1.1'
 
 depends 'ruby-ng'
 depends 'odi-users'
