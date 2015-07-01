@@ -6,7 +6,7 @@ default['concurrency'] = 2
 default['repo'] = 'theodi/open-data-certificate'
 
 default['mysql']['database'] = 'certificates'
-default['migrate'] = 'bundle exec rake db:schema:load'
+default['migrate'] = 'bundle exec rake db:migrate'
 default['post_deploy_tasks'] = ['bundle exec rake odc:deploy']
 default['deployment']['rack_env'] = 'production'
 default['deployment']['revision'] = 'CURRENT'
