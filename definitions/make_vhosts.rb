@@ -20,6 +20,7 @@ define :make_vhosts, :params => {} do
       :port               => node['start_port'],
       :concurrency        => node['concurrency'],
       :fqdn               => node['fully_qualified_domain_name'],
+      :prefix             => begin node['deployment']['nginx']['prefix'] rescue nil end,
       :catch_and_redirect => node['catch_and_redirect']
     )
     action :create

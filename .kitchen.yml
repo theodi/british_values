@@ -14,28 +14,21 @@ suites:
     run_list:
       - recipe[chef_certificates::default]
     attributes:
-  #    envbuilder:
-  #      base_dir: "/home/certificates"
-  #      base_dbi: "production"
-  #      owner: "certificates"
-  #      group: "certificates"
-  #    ruby-ng:
-  #      ruby_version: 1.9.3
-  #      dev_package: 1.9.1
-  #    user: certificates
-  #    fully_qualified_domain_name: certificates.theodi.org
-  #    catch_and_redirect:
-  #      - certificate.theodi.org
-  #    start_port: 8000
-  #    concurrency: 2
-  #    repo: theodi/open-data-certificate
       mysql:
         host: <%= `ipconfig getifaddr en0` %>
-  #      database: certificates
         password: certificates
-  #    migrate: bundle exec rake db:schema:load
-  #    post_deploy_tasks:
-  #      - bundle exec rake odc:deploy
       deployment:
-        revision: 2ce8313ad84090eb147dc2702d1c582766394fa8
-  #      rack_env: production
+        revision: baf0f799eb53ebf8a4a5d69d7ce47db5126bdc62
+
+  - name: staging
+    data_bags_path: test/data_bags
+    run_list:
+      - recipe[chef_certificates::default]
+    attributes:
+      mysql:
+        host: <%= `ipconfig getifaddr en0` %>
+        password: certificates
+      deployment:
+        revision: baf0f799eb53ebf8a4a5d69d7ce47db5126bdc62
+        nginx:
+          prefix: staging
