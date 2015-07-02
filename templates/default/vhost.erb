@@ -5,9 +5,14 @@ upstream <%= @servername %> {
   <% end %>
 }
 
+<% server_name = @fqdn %>
+<% if @prefix %>
+<%   server_name = "#{@prefix}.#{server_name}" %>
+<% end %>
+
 server {
   listen 80 default;
-  server_name <%= @fqdn %>;
+  server_name <%= server_name %>;
   access_log /var/log/nginx/<%= @fqdn %>.log;
   error_log /var/log/nginx/<%= @fqdn %>.err;
   root /home/certificates/<%= @fqdn %>/current/public/;
