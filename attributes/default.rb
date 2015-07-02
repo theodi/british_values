@@ -21,3 +21,4 @@ default['ruby-ng']['dev_package'] = '1.9.1'
 
 default['chef_client']['config']['ssl_verify_mode'] = 'verify_none'
 default['chef_client']['interval'] = 300
+default['chef_client']['splay'] = 60
