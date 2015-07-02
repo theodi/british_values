@@ -39,3 +39,15 @@ suites:
       deployment:
         revision: 2ce8313ad84090eb147dc2702d1c582766394fa8
   #      rack_env: production
+  - name: staging
+    data_bags_path: test/data_bags
+    run_list:
+      - recipe[chef_certificates::default]
+    attributes:
+      mysql:
+        host: <%= `ipconfig getifaddr en0` %>
+        password: certificates
+      deployment:
+        revision: baf0f799eb53ebf8a4a5d69d7ce47db5126bdc62
+        nginx:
+          prefix: staging
