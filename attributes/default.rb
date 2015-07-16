@@ -12,7 +12,7 @@ default['deployment']['rack_env'] = 'production'
 default['deployment']['revision'] = 'CURRENT'
 
 default['envbuilder']['base_dir'] = '/home/certificates'
-default['envbuilder']['base_dbi'] = 'production'
+default['envbuilder']['base_dbi'] = 'development'
 default['envbuilder']['owner'] = 'certificates'
 default['envbuilder']['group'] = 'certificates'
 
