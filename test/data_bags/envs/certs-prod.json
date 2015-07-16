@@ -1,5 +1,5 @@
 {
-  "id": "production",
+  "id": "certs-prod",
   "content" : {
     "rack_env": "production",
     "rails_env": "production",
