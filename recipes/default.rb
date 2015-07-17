@@ -12,8 +12,8 @@ include_recipe 'chef_certificates::dependencies'
 include_recipe 'git'
 include_recipe 'nginx'
 include_recipe 'odi-pk'
-include_recipe 'odi-users::default'
-include_recipe 'ruby-ng::default'
+include_recipe 'odi-users'
+include_recipe 'ruby-ng'
 
 include_recipe 'odi-monitoring'
 
@@ -25,7 +25,6 @@ deploy_revision "/home/#{user}/#{fqdn}" do
   migrate node.has_key? :migrate
   migration_command node['migrate']
 #  BORK
-#    * WE NEED TO db:create FIRST, BUT NOT PER-DEPLOY, SURELY?
 #    * ONLY A SINGLE NODE SHOULD DO DEPLOY TASKS - SOMETHING REDIS QUEUE
   action :deploy
   environment(

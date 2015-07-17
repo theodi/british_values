@@ -1,5 +1,5 @@
 {
-  "id": "staging",
+  "id": "certs-stg",
   "content" : {
     "rack_env": "production",
     "rails_env": "production",

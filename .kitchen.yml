@@ -3,14 +3,18 @@ driver:
   name: vagrant
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
+  environments_path: test/environments
+  data_bags_path: test/data_bags
 
 platforms:
   - name: ubuntu-14.04
 
 suites:
-  - name: default
-    data_bags_path: test/data_bags
+  - name: production
+    provisioner:
+      client_rb:
+        environment: certs-prod
     run_list:
       - recipe[chef_certificates::default]
     attributes:
@@ -21,7 +25,9 @@ suites:
         revision: baf0f799eb53ebf8a4a5d69d7ce47db5126bdc62
 
   - name: staging
-    data_bags_path: test/data_bags
+    provisioner:
+      client_rb:
+        environment: certs-prod
     run_list:
       - recipe[chef_certificates::default]
     attributes:
@@ -29,6 +35,6 @@ suites:
         host: <%= `ipconfig getifaddr en0` %>
         password: certificates
       deployment:
-        revision: baf0f799eb53ebf8a4a5d69d7ce47db5126bdc62
+        revision: staging
         nginx:
           prefix: staging
