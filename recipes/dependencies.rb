@@ -10,6 +10,8 @@
   end
 end
 
-package "ruby#{node['dev_package']}-dev" do
-  action :install
+if node['ruby-ng']['dev_package']
+  package "ruby#{node['dev_package']}-dev" do
+    action :install
+  end
 end

@@ -5,6 +5,5 @@ describe file '/home/certificates/certificates.theodi.org/shared/config/database
   it { should be_file }
   its(:content) { should match /production:/ }
   its(:content) { should match /adapter: mysql2/ }
-  its(:content) { should match /pool: 50/ }
-  its(:md5sum) { should eq 'db1eedc675035cfda73e8a56711b1ee0' }
+  its(:md5sum) { should eq '311170f5eb120fc116533352d300e4ba' }
 end

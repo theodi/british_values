@@ -15,7 +15,7 @@ server {
   server_name <%= server_name %>;
   access_log /var/log/nginx/<%= @fqdn %>.log;
   error_log /var/log/nginx/<%= @fqdn %>.err;
-  root /home/certificates/<%= @fqdn %>/current/public/;
+  root /home/<%= @servername %>/<%= @fqdn %>/current/public/;
 
   location / {
     try_files $uri @backend;

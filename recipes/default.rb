@@ -14,6 +14,7 @@ include_recipe 'nginx'
 include_recipe 'odi-pk'
 include_recipe 'odi-users'
 include_recipe 'ruby-ng'
+include_recipe 'ruby-ng::dev' unless node['ruby-ng']['dev_package']
 
 include_recipe 'odi-monitoring'
 
@@ -59,7 +60,8 @@ deploy_revision "/home/#{user}/#{fqdn}" do
         :mysql_host     => node['mysql']['host'],
         :mysql_database => node['mysql']['database'],
         :mysql_username => node['mysql']['database'],
-        :mysql_password => node['mysql']['password']
+        :mysql_password => node['mysql']['password'],
+        :mysql_pool     => node['mysql']['pool']
       )
     end
 

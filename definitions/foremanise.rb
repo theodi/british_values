@@ -17,7 +17,7 @@ define :foremanise, :params => {} do
         -a #{params[:name]} \
         -u #{params[:name]} \
         -p #{params[:port]} \
-        -c thin=#{params[:concurrency]},delayed_job=1 \
+        -c thin=#{params[:concurrency]},delayed_job=1,sidekiq=1 \
         -e #{params[:cwd]}/.env \
         upstart /tmp/init
     EOF

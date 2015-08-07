@@ -1,6 +1,8 @@
 ---
 driver:
   name: vagrant
+  customize:
+    memory: 2048
 
 provisioner:
   name: chef_zero
@@ -21,8 +23,8 @@ suites:
       mysql:
         host: <%= `ipconfig getifaddr en0` %>
         password: certificates
-      deployment:
-        revision: baf0f799eb53ebf8a4a5d69d7ce47db5126bdc62
+    #  deployment:
+    #    revision: baf0f799eb53ebf8a4a5d69d7ce47db5126bdc62
 
   - name: staging
     provisioner:
@@ -35,6 +37,8 @@ suites:
         host: <%= `ipconfig getifaddr en0` %>
         password: certificates
       deployment:
-        revision: staging
+        revision: STAGING
         nginx:
           prefix: staging
+      ruby-ng:
+        ruby_version: 2.0
