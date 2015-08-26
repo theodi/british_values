@@ -16,7 +16,7 @@ default['envbuilder']['base_dir'] = '/home/certificates'
 default['envbuilder']['owner'] = 'certificates'
 default['envbuilder']['group'] = 'certificates'
 
-default['ruby-ng']['ruby_version'] = '1.9.3'
+default['ruby-ng']['ruby_version'] = '2.0'
 #default['ruby-ng']['dev_package'] = '1.9.1'
 
 default['chef_client']['config']['ssl_verify_mode'] = 'verify_none'

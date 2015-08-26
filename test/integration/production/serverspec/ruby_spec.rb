@@ -1,6 +1,6 @@
 require 'serverspec'
 set :backend, :exec
 
-describe package 'ruby1.9.3' do
+describe package 'ruby2.0' do
   it { should be_installed }
 end
