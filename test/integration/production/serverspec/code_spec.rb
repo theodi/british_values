@@ -2,7 +2,6 @@ require 'serverspec'
 set :backend, :exec
 
 %w{
-  ruby1.9.1-dev
   build-essential
   libcurl4-openssl-dev
   libmysqlclient-dev
