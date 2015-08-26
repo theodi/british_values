@@ -1,8 +1,9 @@
 require 'serverspec'
 set :backend, :exec
 
-describe service 'chef-client' do
-  it { should be_running }
+describe file '/etc/cron.d/chef-client' do
+  it { should be_file }
+  its(:content) { should match /\/usr\/bin\/chef-client > \/var\/log\/chef\/cron.log/ }
 end
 
 describe file '/etc/chef/client.rb' do

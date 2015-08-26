@@ -4,7 +4,7 @@ fqdn = node['fully_qualified_domain_name']
 
 include_recipe 'apt'
 include_recipe 'chef-client::config'
-include_recipe 'chef-client::upstart_service'
+include_recipe 'chef-client::cron'
 include_recipe 'envbuilder'
 
 include_recipe 'chef_certificates::dependencies'
