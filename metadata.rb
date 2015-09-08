@@ -1,5 +1,5 @@
 name 'chef_certificates'
-version '0.1.19'
+version '0.1.20'
 
 depends 'chef-client'
 depends 'ruby-ng'
