@@ -16,5 +16,6 @@ describe file '/etc/nginx/sites-enabled/certificates.theodi.org' do
   its(:content) { should match /server_name certificates.theodi.org;/ }
   its(:content) { should match /root \/home\/certificates\/certificates.theodi.org\/current\/public\/;/ }
   its(:content) { should match /proxy_pass http:\/\/certificates;/ }
-  its(:content) { should match /server_name certificate.theodi.org;/ }  
+  its(:content) { should match /server_name certificate.theodi.org;/ }
+  its(:content) { should_not match /proxy_set_header X-Forwarded-Proto 'http';/ }
 end
