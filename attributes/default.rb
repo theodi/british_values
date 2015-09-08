@@ -17,14 +17,10 @@ default['envbuilder']['owner'] = 'certificates'
 default['envbuilder']['group'] = 'certificates'
 
 default['ruby-ng']['ruby_version'] = '2.0'
-#default['ruby-ng']['dev_package'] = '1.9.1'
-
-#default['chef_client']['config']['ssl_verify_mode'] = 'verify_none'
-#default['chef_client']['interval'] = 300
-#default['chef_client']['splay'] = 60
 
 default['chef_client']['init_style'] = 'none'
 default['chef_client']['cron']['use_cron_d'] = true
 default['chef_client']['cron']['hour'] = '*'
 default['chef_client']['cron']['minute'] = '*/10'
+# I THINK THIS IS BOGUS
 default['chef_client']['cron']['log_file'] = '/var/log/chef/cron.log'
