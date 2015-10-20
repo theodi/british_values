@@ -9,11 +9,11 @@ describe port(8001) do
   it { should be_listening }
 end
 
-describe command 'sudo apt-get install curl && curl --silent -I http://localhost:8001 | grep "200 OK"' do
+describe command 'sudo apt-get install curl ; curl --silent -I http://localhost:8001 | grep "200 OK"' do
   its(:stdout) { should match /200 OK/ }
 end
 
-describe command 'sudo apt-get install curl && curl --silent -I http://localhost | grep "200 OK"' do
+describe command 'sudo apt-get install curl ; curl --silent -I http://localhost | grep "200 OK"' do
   its(:stdout) { should match /200 OK/ }
 end
 

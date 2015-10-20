@@ -23,8 +23,6 @@ suites:
       mysql:
         host: <%= `ipconfig getifaddr en0` %>
         password: certificates
-      deployment:
-        revision: baf0f799eb53ebf8a4a5d69d7ce47db5126bdc62
     
   - name: staging
     provisioner:

@@ -1,11 +1,4 @@
 name 'chef_certificates'
-version '0.1.20'
+version '0.1.23'
 
-depends 'chef-client'
-depends 'ruby-ng'
-depends 'odi-users'
-depends 'git'
-depends 'envbuilder'
-depends 'odi-pk'
-depends 'odi-monitoring'
-depends 'nginx'
+depends 'skellington'
